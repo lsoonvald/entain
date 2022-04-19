@@ -1,0 +1,68 @@
+version: '3'
+services: 
+  db:
+    image: postgres
+    restart: always
+    environment: 
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - POSTGRES_DB=${POSTGRES_DATABASE}
+    container_name: postgres-db
+    volumes:
+      - ./pgdata:/var/lib/postgresql/data
+  nestjs:
+    build: 
+      context: .
+      dockerfile: ./entain-be/Dockerfile
+    image: nestjs:latest
+    environment: 
+      - POSTGRES_HOST=${POSTGRES_HOST}
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PORT=${POSTGRES_PORT}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - POSTGRES_DATABASE=${POSTGRES_DATABASE}
+      - PORT=${PORT}
+      - MODE=${MODE}
+      - JWT_REFRESH_SECRET=${JWT_REFRESH_SECRET}
+      - JWT_ACCESS_SECRET=${JWT_ACCESS_SECRET}
+      - AUTH_ACCESS_TOKEN_EXPIRE=${AUTH_ACCESS_TOKEN_EXPIRE}
+      - AUTH_REFRESH_TOKEN_EXPIRE=${AUTH_REFRESH_TOKEN_EXPIRE}
+    ports: 
+      - "3000:${PORT}" # expose-to-the-world : only-in-the-docker
+    container_name: nest-entain-be
+    depends_on: 
+      - db
+    volumes: 
+      - ./entain-be:/app
+      - /app/node_modules
+  pgadmin:
+    image: dpage/pgadmin4
+    restart: always
+    container_name: nest-pgadmin4
+    environment: 
+      - PGADMIN_DEFAULT_EMAIL=${PGADMIN_DEFAULT_EMAIL}
+      - PGADMIN_DEFAULT_PASSWORD=${PGADMIN_DEFAULT_PASSWORD}
+      - PGADMIN_LISTEN_PORT=${PGADMIN_LISTEN_PORT}
+    ports: 
+      - "8080:80"
+    volumes: 
+      - ./pgadmin-data:/var/lib/pgadmin
+    depends_on: 
+      - db
+  angular:
+    container_name: angular-entain-fe
+    build:
+      context: .
+      dockerfile: ./entain-fe/Dockerfile
+    ports:
+      - "4200:4200"
+    environment:
+      SHELL: /bin/bash
+      NODE_ENV: development
+    volumes:
+      - ./entain-fe/src:/usr/src/app/src:cached
+      - ./entain-fe/package.json:/usr/src/app/package.json
+    entrypoint: ng serve --host 0.0.0.0 --poll 1
+volumes:
+  pgdata:
+  pgadmin-data:

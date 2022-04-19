@@ -1,0 +1,12 @@
+<app-full-background></app-full-background>
+<form [formGroup]="form" class="login-form" (submit)="logIn()">
+  <mat-form-field appearance="outline" class="login-form__field">
+    <mat-label>email</mat-label>
+    <label><input type="text" matInput formControlName="email"></label>
+  </mat-form-field>
+  <mat-form-field appearance="outline" class="login-form__field">
+    <mat-label>password</mat-label>
+    <label><input type="password" matInput formControlName="password"></label>
+  </mat-form-field>
+  <button mat-flat-button color="primary">Log in</button>
+</form>
