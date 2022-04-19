@@ -15,3 +15,13 @@ The project is accessible in:
 ```
 http://localhost:4200
 ```
+
+You can log in with:
+
+```
+test@test.com
+```
+
+```
+test1234
+```
