@@ -20,12 +20,24 @@ export interface IUser {
   tags?: ITag[];
 }
 
-export interface IOffice {
+export interface IUserForm {
   id: number;
+  email: string;
+  firstName?: string;
+  lastName?: string;
+  office?: number;
+  birthDate?: Date | null;
+  mobile?: string;
+  admin?: boolean;
+  tags?: number[];
+}
+
+export interface IOffice {
+  id: string;
   name: string;
 }
 
 export interface ITag {
-  id: number;
+  id: string;
   text: string;
 }

@@ -1,0 +1,58 @@
+<form *ngIf="form && (offices | async) && (tags | async)" [formGroup]="form" class="add-form" (submit)="createUser()">
+  <mat-form-field appearance="outline">
+    <mat-label>email</mat-label>
+    <label><input type="text" matInput formControlName="email"></label>
+  </mat-form-field>
+  <mat-form-field appearance="outline">
+    <mat-label>first name</mat-label>
+    <label><input type="text" matInput formControlName="firstName"></label>
+  </mat-form-field>
+  <mat-form-field appearance="outline">
+    <mat-label>last name</mat-label>
+    <label><input type="text" matInput formControlName="lastName"></label>
+  </mat-form-field>
+  <mat-form-field appearance="outline">
+    <mat-label>birth date</mat-label>
+    <input matInput [matDatepicker]="picker" formControlName="birthDate">
+    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+    <mat-datepicker #picker></mat-datepicker>
+  </mat-form-field>
+  <mat-form-field appearance="outline">
+    <mat-label>mobile</mat-label>
+    <label><input type="text" matInput formControlName="mobile"></label>
+  </mat-form-field>
+  <mat-form-field appearance="outline">
+    <mat-label>office</mat-label>
+    <mat-select formControlName="office" [compareWith]="compareFn">
+      <mat-option [value]="null">None</mat-option>
+      <mat-option *ngFor="let office of offices | async" [value]="office">{{ office.name }}</mat-option>
+    </mat-select>
+  </mat-form-field>
+  <mat-form-field appearance="outline">
+    <mat-label>tags</mat-label>
+    <mat-select formControlName="tags" multiple [compareWith]="compareFn">
+      <mat-option *ngFor="let tag of tags | async" [value]="tag">{{ tag.text }}</mat-option>
+    </mat-select>
+  </mat-form-field>
+
+
+
+  <mat-form-field appearance="outline">
+    <mat-label>tags</mat-label>
+    <mat-chip-list #chipList aria-label="Tag selection" formControlName="tags">
+      <mat-chip *ngFor="let tag of form.controls.tags.value" (removed)="removeTag(tag)">
+        {{tag.text}}
+      </mat-chip>
+      <input #tagInput matInput [matChipInputFor]="chipList" placeholder="Ids" (matChipInputTokenEnd)="addTag($event)" [matAutocomplete]="auto">
+    </mat-chip-list>
+    <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selectedTag($event)">
+      <mat-option *ngFor="let tag of tags | async" [value]="tag">
+        {{tag.text}}
+      </mat-option>
+    </mat-autocomplete>
+  </mat-form-field>
+
+
+
+  <button mat-flat-button color="primary">{{ form.controls.id.value ? 'Save user' : 'Add user' }}</button>
+</form>

@@ -1,1 +1,53 @@
-<app-block title="Employees"></app-block>
+<app-block title="Employees">
+  <table mat-table [dataSource]="employees" class="mat-elevation-z8 employee-table">
+
+    <ng-container matColumnDef="email">
+      <th mat-header-cell *matHeaderCellDef> Email </th>
+      <td mat-cell *matCellDef="let element" (click)="openAddEmployeeDialog(element)"> {{element.email}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="fname">
+      <th mat-header-cell *matHeaderCellDef> First name </th>
+      <td mat-cell *matCellDef="let element" (click)="openAddEmployeeDialog(element)"> {{element.firstName}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="lname">
+      <th mat-header-cell *matHeaderCellDef> Last name </th>
+      <td mat-cell *matCellDef="let element" (click)="openAddEmployeeDialog(element)"> {{element.lastName}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="office">
+      <th mat-header-cell *matHeaderCellDef> Office </th>
+      <td mat-cell *matCellDef="let element" (click)="openAddEmployeeDialog(element)"> {{ element.office?.name }} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="bdate">
+      <th mat-header-cell *matHeaderCellDef> Birth date </th>
+      <td mat-cell *matCellDef="let element" (click)="openAddEmployeeDialog(element)"> {{element.birthDate}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="mobile">
+      <th mat-header-cell *matHeaderCellDef> Mobile </th>
+      <td mat-cell *matCellDef="let element" (click)="openAddEmployeeDialog(element)"> {{element.mobile}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="tags">
+      <th mat-header-cell *matHeaderCellDef> Tags </th>
+      <td mat-cell *matCellDef="let element" (click)="openAddEmployeeDialog(element)">
+        <ng-container *ngFor="let tag of element.tags; let i = index">{{ i > 0 && i + 1 <= element.tags.length ? ', '
+            : '' }}{{ tag.text }}</ng-container>
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="delete">
+      <th mat-header-cell *matHeaderCellDef> Delete </th>
+      <td mat-cell *matCellDef="let element"> <mat-icon (click)="deleteEmployee(element)">delete</mat-icon> </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;" class="employee-table__row"></tr>
+  </table>
+  <button mat-fab color="primary" aria-label="Add user button" class="add-btn" (click)="openAddEmployeeDialog()">
+    <mat-icon>add</mat-icon>
+  </button>
+</app-block>

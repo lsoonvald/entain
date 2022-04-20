@@ -12,8 +12,10 @@ import { Router } from '@angular/router';
 })
 export class AuthFacadeService {
   private accessToken$ = new BehaviorSubject<string>('');
+  accessToken!: string;
   private refreshToken$ = new BehaviorSubject<string>('');
   private currentUser$ = new BehaviorSubject<IUser | undefined>(undefined);
+  currentUser = this.currentUser$.asObservable();
   form: FormGroup | undefined;
 
   constructor(
@@ -43,6 +45,7 @@ export class AuthFacadeService {
 
   setAccessToken(token: string): void {
     this.accessToken$.next(token);
+    this.accessToken = token;
     this.setCurrentUser(jwt_decode(token));
     this.redirectToHome();
   }

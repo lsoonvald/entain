@@ -1,5 +1,5 @@
 import { NestMiddleware, Injectable, UnauthorizedException } from '@nestjs/common';
-import { NextFunction, Request } from 'express';
+import { NextFunction, Request, Response } from 'express';
 import * as jwt from 'jsonwebtoken';
 import { Secret } from 'jsonwebtoken';
 import { UserService } from 'user/services/user.service';
@@ -8,10 +8,10 @@ import { UserService } from 'user/services/user.service';
 export class AuthMiddleware implements NestMiddleware {
   constructor(private readonly userService: UserService) {}
 
-  async use(req: Request, next: NextFunction) {
+  async use(req, res: Response, next: NextFunction) {
     if (!req.headers.authorization) throw new UnauthorizedException('Missing authentication header');
 
-    const token = req.headers.authorization.split(' ')[1];
+    const token = req.headers.authorization;
 
     let decoded: any;
     try {

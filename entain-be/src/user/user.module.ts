@@ -3,6 +3,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { UserEntity } from './user.entity';
 import { UserService } from './services/user.service';
 import { AuthMiddleware } from '../auth/auth.middleware';
+import { UserController } from './user.controller';
 
 @Module({
   imports: [
@@ -11,7 +12,7 @@ import { AuthMiddleware } from '../auth/auth.middleware';
     ], 'main'),
   ],
   providers: [UserService],
-  controllers: [],
+  controllers: [UserController],
   exports: [
     UserService
   ],
@@ -20,6 +21,6 @@ export class UserModule implements NestModule {
   public configure(consumer: MiddlewareConsumer) {
     consumer
       .apply(AuthMiddleware)
-      .forRoutes('users');
+      .forRoutes('user');
   }
 }

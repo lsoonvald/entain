@@ -1,15 +1,15 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { MetaData } from 'shared/entitites/meta-data';
-import { Entity, Column, PrimaryColumn } from 'typeorm';
+import { Entity, Column, PrimaryColumn, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity('tag')
 export class TagEntity extends MetaData {
     @Column({ name: 'id' })
-    @PrimaryColumn({ type: 'bigint' })
+    @PrimaryGeneratedColumn({ type: 'bigint' })
     @ApiProperty()
     id!: number;
 
-    @Column({ name: 'text', type: 'text' })
+    @Column({ name: 'text', type: 'text', nullable: true })
     @ApiProperty()
     text!: string;
 

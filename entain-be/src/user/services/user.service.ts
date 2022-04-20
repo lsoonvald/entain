@@ -3,8 +3,9 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { UserEntity } from '../user.entity';
 import { HttpException } from '@nestjs/common/exceptions/http.exception';
 import { HttpStatus } from '@nestjs/common';
-import { Repository } from 'typeorm';
+import { DeleteResult, InsertResult, Repository, UpdateResult } from 'typeorm';
 import { mockUser } from 'user/helpers/user';
+import { OfficeEntity } from 'office/office.entity';
 
 @Injectable()
 export class UserService implements OnModuleInit {
@@ -36,5 +37,21 @@ export class UserService implements OnModuleInit {
 
   async findByIdAllUsers(id: number): Promise<UserEntity | undefined> {
     return await this.userRepository.findOne({ where: { id } });
+  }
+
+  getUsers(): Promise<UserEntity[]> {
+    return this.userRepository.find({ where: { admin: false } });
+  }
+
+  deleteUser(id: string): Promise<DeleteResult> {
+    return this.userRepository.delete(id);
+  }
+
+  createUser(user: UserEntity): Promise<UserEntity> {
+    return this.userRepository.save(user);
+  }
+
+  updateUser(user: UserEntity): Promise<UpdateResult> {
+    return this.userRepository.update({ id: user.id }, user);
   }
 }

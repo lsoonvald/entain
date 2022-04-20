@@ -1,18 +1,18 @@
 import { OfficeEntity } from 'office/office.entity';
 import { MetaData } from 'shared/entitites/meta-data';
 import { TagEntity } from 'tag/tag.entity';
-import { Entity, Column, PrimaryColumn, OneToOne, JoinColumn, ManyToMany, JoinTable } from 'typeorm';
+import { Entity, Column, JoinColumn, ManyToMany, JoinTable, PrimaryGeneratedColumn, OneToMany, ManyToOne } from 'typeorm';
 
 @Entity('user')
 export class UserEntity extends MetaData {
     @Column({ name: 'id' })
-    @PrimaryColumn({ type: 'bigint' })
-    id!: number;
+    @PrimaryGeneratedColumn({ type: 'bigint' })
+    id?: number;
 
-    @Column({ name: 'email', type: 'text' })
-    email!: string;
+    @Column({ name: 'email', type: 'text', unique: true })
+    email?: string;
 
-    @Column({ name: 'psw', type: 'text' })
+    @Column({ name: 'psw', type: 'text', nullable: true })
     psw?: string;
 
     @Column({ name: 'first_name', type: 'text', nullable: true })
@@ -21,9 +21,9 @@ export class UserEntity extends MetaData {
     @Column({ name: 'last_name', type: 'text', nullable: true })
     lastName?: string;
 
-    @OneToOne(() => OfficeEntity, {
+    @ManyToOne(() => OfficeEntity, {
         eager: true,
-        cascade: ['insert', 'update']
+        cascade: true,
     })
     @JoinColumn()
     public office?: OfficeEntity;
@@ -39,7 +39,7 @@ export class UserEntity extends MetaData {
 
     @ManyToMany(() => TagEntity, {
         eager: true,
-        cascade: ['insert', 'update']
+        cascade: true,
     })
     @JoinTable()
     public tags?: TagEntity[];
