@@ -48,7 +48,6 @@ export class EmployeesFacadeService {
   }
 
   createUser(user: IUser): Observable<IUser> {
-    console.log(user);
     return this.api.createUser(user);
   }
 
