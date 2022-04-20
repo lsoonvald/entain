@@ -67,12 +67,12 @@ export class AddEmployeeDialogComponent {
   }
 
   addTag(event: any): void {
-    this.form.controls.tags.value.push({ text: event.value });
+    console.log(this.form.controls.tags.value);
+    this.form.controls.tags.value ? this.form.controls.tags.value.push({ text: event.value }) : this.form.controls.tags.setValue([{ text: event.value }]);
     this.form.controls.tags.updateValueAndValidity();
   }
 
   removeTag(event: any): void {
-    console.log(event);
     const newValue = this.form.controls.tags.value;
     const index = newValue.findIndex((item: ITag) => item.id === event.id || item.text === event.text);
     newValue.splice(index, 1);
@@ -81,7 +81,8 @@ export class AddEmployeeDialogComponent {
   }
 
   selectedTag(event: MatAutocompleteSelectedEvent): void {
-    this.form.controls.tags.value.push(event.option.value);
+    console.log(this.form.controls.tags.value);
+    this.form.controls.tags.value ? this.form.controls.tags.value.push(event.option.value) : this.form.controls.tags.setValue([event.option.value]);
     this.form.controls.tags.updateValueAndValidity();
     this.tagInput.nativeElement.value = '';
   }

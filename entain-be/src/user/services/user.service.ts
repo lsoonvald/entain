@@ -48,6 +48,9 @@ export class UserService implements OnModuleInit {
   }
 
   createUser(user: UserEntity): Promise<UserEntity> {
+    if (!user.id) {
+      delete user.id;
+    }
     return this.userRepository.save(user);
   }
 

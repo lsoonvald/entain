@@ -2,7 +2,7 @@ import { Injectable, OnModuleInit } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { mockOffices } from 'office/helpers/office';
 import { OfficeEntity } from 'office/office.entity';
-import { Repository } from 'typeorm';
+import { In, Repository } from 'typeorm';
 
 @Injectable()
 export class OfficeService implements OnModuleInit {
@@ -16,8 +16,11 @@ export class OfficeService implements OnModuleInit {
         if (process.env.MODE === 'DEV') this.createDefaultTestOffices();
     }
 
-    createDefaultTestOffices(): void {
-        this.officeEntityRepository.upsert(mockOffices, ['id']);
+    async createDefaultTestOffices(): Promise<void> {
+        const response = await this.officeEntityRepository.find();
+        if (response.length < 3) {
+            this.officeEntityRepository.save(mockOffices);
+        }
     }
 
     getOffices(): Promise<OfficeEntity[]> {
